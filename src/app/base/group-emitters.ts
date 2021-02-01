@@ -21,7 +21,7 @@ export class GroupEmitters{
     create(message:Message){
         let args =  Bot.getArguments(message.content);
         let emitter = this.findEmitter(args);
-        args.unshift(message.author.username)
+        args.unshift(message.author.id)
 
         if(emitter)
             emitter.create(res => message.reply(res), ...args)
@@ -34,7 +34,7 @@ export class GroupEmitters{
         let emitter = this.findEmitter(args);
         
         if(emitter)
-            emitter.read(res => message.reply(res),args.shift())
+            emitter.read(res => message.reply(res),args.shift(), message.author.id)
         else
             console.log("No hay entidades emisoras")
     }

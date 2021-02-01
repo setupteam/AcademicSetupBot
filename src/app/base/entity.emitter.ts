@@ -28,8 +28,8 @@ export abstract class EntityEmitter extends EventEmitter {
         this.emit("create", response, ...args);
     }
 
-    read(response:(res:any)=>void, name:string){
-        this.emit("read", response, name);
+    read(response:(res:any)=>void, name:string, user:string){
+        this.emit("read", response, name, user);
     }
 
     update(response:(res:any)=>void, ...args:string[]){

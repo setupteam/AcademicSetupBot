@@ -1,1 +1,23 @@
-{"projects":[{"creator":"FelipeSpirit","name":"Test2","createdAt":"2021-02-01T18:07:36.027Z","category":"fun"},{"creator":"FelipeSpirit","name":"Test4","createdAt":"2021-02-01T18:07:59.519Z"},{"creator":"FelipeSpirit","name":"TT","createdAt":"2021-02-01T18:10:04.851Z","members":["<@!269606603177721857>"]}]}
+{"projects":[{
+    "creator":"305149741799571457",
+    "name":"Lab2",
+    "createdAt":"2021-02-01T19:49:49.834Z",
+    "members":["305149741799571457","!269606603177721857"],
+    "tasks":[
+        {"name":":cloud: Server", "status":"finished"},
+        {"name":"Poner texto a imagen", "status":"finished"},
+        {"name":"Imagen en Docker", "status":"finished"},
+        {"name":"Contenedores en Docker", "status":"finished"},
+        {"name":"Mostrar imagen con texto", "status":"finished"},
+        {"name":"Frases aleatorias", "status":"finished"},
+        {"name":":military_helmet: Client", "status":"finished"},
+        {"name":"Enviar imagen", "status":"finished"},
+        {"name":"Solicitar agregar Server", "status":"finished"},
+        {"name":":e_mail: Middleware", "status":"inprogress"},
+        {"name":"Ejecutar container", "status":"finished"},
+        {"name":"Balanceo de carga", "status":"finished"},
+        {"name":"Redirigir imagen", "status":"finished"},
+        {"name":"Enviar correo", "status":"finished"},
+        {"name":"Monitoreo", "status":"inprogress"}
+    ]
+}]}

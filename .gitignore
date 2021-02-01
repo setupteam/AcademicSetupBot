@@ -105,3 +105,4 @@ dist
 dist/
 src/environment/environment.ts
 1.0.0/config.json
+database.json
