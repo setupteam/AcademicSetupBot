@@ -13,9 +13,11 @@ export class AcademicSetupBot extends Bot{
     }
 
     init(){
-        this.setResponse(["crear", "c"], message => this.emitters.create(message))
-        this.setResponse(["ver", "v"], message => this.emitters.read(message))
-        this.setResponse(["modificar", "m"], message => this.emitters.update(message))
-        this.setResponse(["eliminar", "e"], message => this.emitters.delete(message))
+        return [
+            { names: ["crear", "c"], listener: message => this.emitters.create(message)},
+            { names: ["ver", "v"], listener: message => this.emitters.read(message)},
+            { names: ["modificar", "m"], listener: message => this.emitters.update(message)},
+            { names: ["eliminar", "e"], listener: message => this.emitters.delete(message)}
+        ]
     }
 }

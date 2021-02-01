@@ -16,14 +16,14 @@ export abstract class Bot {
       this.emitter.emit(Bot.getArguments(message.content)[0], message);
     });
 
-    this.init();
+    this.init().forEach(oo=>this.setResponse(oo.names, oo.listener));
   }
 
   start(){
     return this.client.login(environment.token);
   }
 
-  setResponse(events:string[], listener:(message:Message) => void){
+  private setResponse(events:string[], listener:(message:Message) => void){
     events.forEach(e=>{
       this.emitter.on(e, listener);
     })
@@ -33,5 +33,5 @@ export abstract class Bot {
     return message.slice(environment.prefix.length).trim().split(/ +/g);
   }
 
-  protected abstract init();
+  protected abstract init():{ names:string[], listener:(message:Message) => void }[];
 }
