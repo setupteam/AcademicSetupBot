@@ -1,6 +1,6 @@
 import { Client, Message } from "discord.js";
 import { EventEmitter } from 'events';
-import { environment } from "../../environment/environment.";
+import { environment } from "../../environment/environment";
 
 export abstract class Bot {
   private client: Client;

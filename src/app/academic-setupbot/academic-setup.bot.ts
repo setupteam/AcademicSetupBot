@@ -1,6 +1,6 @@
 import { Bot } from "../base/bot";
 import { GroupEmitters } from "../base/group-emitters";
-import { environment } from "../../environment/environment.";
+import { environment } from "../../environment/environment";
 import { ProjectEmitter } from "./emitters/project.emiter";
 
 export class AcademicSetupBot extends Bot{

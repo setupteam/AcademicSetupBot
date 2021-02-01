@@ -102,4 +102,6 @@ dist
 
 # TernJS port file
 .tern-port
-config.json
+dist/
+src/environment/environment.ts
+1.0.0/config.json
