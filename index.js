@@ -15,13 +15,19 @@ client.on("message", message=>{
 	const args = message.content.slice(prefix.length).trim().split(/ +/g);
 	const command = args.shift().toLowerCase();
 	let entity;
+	console.log(message.content)
 
 	switch(command){
 		case "crear":
+		case "c":
 			switch(args.shift().toLowerCase()){
 				case "proyecto":
+				case "pj":
 					if(args.length > 0){
-						message.channel.send(createProject(args.join(" ")));
+						createProject(args.join(" "),message.author.username).then(res=>{
+							message.channel.send(res);
+						})
+						
 					}else{
 						message.channel.send("Por favor, digita el nombre del proyecto. st crear proyecto nombre");
 					}
@@ -32,8 +38,10 @@ client.on("message", message=>{
 			}
 			break;
 		case "mostrar":
+		case "m":
 			switch(args.shift().toLowerCase()){
 				case "proyecto":
+				case "pj":
 					if(args.length > 0){
 						message.channel.send(consultProject(args.join(" ")));
 					}else{
@@ -45,28 +53,56 @@ client.on("message", message=>{
 				break;
 			}
 			break;
+		case "actualizar":
+		case "a":
+			break;
+		case "eliminar":
+		case "e":
+			switch(args.shift().toLowerCase()){
+				case "proyecto":
+				case "pj":
+					if(args.length > 0){
+						removeProject(args.join(" ")).then(res=>{
+							message.channel.send(res);
+						})
+						
+					}else{
+						message.channel.send("Por favor, digita el nombre del proyecto. st crear proyecto nombre");
+					}
+				break;
+				default:
+					message.channel.send("Esa entidad no existe. Prueba con proyecto, equipo, tarea o materia");
+				break;
+			}
+			break;
+		case "proyectos":
+		case "pjs":
+			message.channel.send(consultProjects());
+			break;
 	}
 })
 
 client.login(config.token);
 
-function createProject(name){
-	const file = require('./persistence.json');
-    
-	/*file.key = "new value";
-	    
-	fs.writeFile(fileName, JSON.stringify(file), function writeJSON(err) {
-	  if (err) return console.log(err);
-	  console.log(JSON.stringify(file));
-	  console.log('writing to ' + fileName);
-	});*/
+function createProject(name, creator){
+	const d = require('./persistence.json');
+	
+	if(d.projects.find(pp => pp.name == name))
+		return new Promise((resolve, reject)=>{
+			resolve(`El proyecto ${name} ya existe.`)
+		})
 
-	return `No se ha podido crear el proyecto : "${name}"`;
+	d.projects.push({name, creator, date: new Date()});
+
+	return saveDatabase(d, 
+		`Creado el proyecto: ${name} por ${creator}`,
+		`No se ha podido crear el proyecto : "${name}"`
+	)
 }
 
 function consultProject(name){
-	const database = require('./persistence.json');
-	let project = database.projects.find(pp => pp.name == name);
+	const d = require('./persistence.json');
+	let project = d.projects.find(pp => pp.name == name);
 	if(project){
 		return JSON.stringify(project);
 	}else{
@@ -76,28 +112,32 @@ function consultProject(name){
 	return `No se ha podido consultar el proyecto : "${name}"`;
 }
 
-class Project{
-	id;
-	name;
-	team;
-	tasks;
-	creator;
-	subject;
-	createdAt;
+function consultProjects(){
+	const d = require('./persistence.json');
+	return JSON.stringify(d.projects);
 }
 
-class Team{
-	id;
-	people;
+function removeProject(name){
+	const d = require('./persistence.json');
+	let pj = d.projects.find(pp => pp.name == name);
+	
+	if(pj) d.projects.splice(d.projects.indexOf(pj), 1);
+	else return new Promise((resolve, reject)=>{
+			resolve(`El proyecto ${name} no existe.`)
+	})
+	return saveDatabase(d, 
+		`Eliminado el proyecto: ${pj.name} de ${pj.creator}`,
+		`No se ha podido eliminar el proyecto : "${pj.name}"`
+	)
 }
 
-class Subject{
-	id;
-	name;
-}
-
-class Task{
-	name;
-	description;
-	status;
+function saveDatabase(d, res, rej){
+	return new Promise((resolve, reject)=>{
+		fs.writeFile('./persistence.json', JSON.stringify(d), (err) => {
+			if (err) 
+				reject(rej);
+			
+			resolve(res)
+		});
+	})
 }

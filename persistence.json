@@ -1,7 +1,1 @@
-{
-	"subjects": [],
-	"projects": [{ "name" : "Luis" }],
-	"teams":[],
-	"tasks":[],
-	"notifications":[]
-}
+{"subjects":[],"projects":[{"name":"Test","creator":"FelipeSpirit","date":"2021-01-31T20:29:14.301Z"}],"teams":[],"tasks":[],"notifications":[]}
