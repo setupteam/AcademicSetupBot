@@ -1,4 +1,3 @@
-
 import { AcademicSetupBot } from './app/academic-setupbot/academic-setup.bot';
 
 let bot = new AcademicSetupBot();

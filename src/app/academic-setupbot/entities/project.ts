@@ -1,5 +1,14 @@
+import { Alarm } from "./alarm";
+import { Task } from "./task";
+
 export class Project{
     name:string;
-    creator?:string;
-    date?:Date;
+    description?:string;
+    creator:string;
+    createdAt:Date;
+    category?:string;
+    repository?:string;
+    members?:string[]=[];
+    tasks?: Task[]=[];
+    alarms?:Alarm[]=[];
 }

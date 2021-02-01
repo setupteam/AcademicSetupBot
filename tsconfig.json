@@ -3,7 +3,7 @@
     "module": "commonjs",
     "moduleResolution": "node",
     "target": "es2016",
-     "outDir": "./dist/academic-setup-bot",
+    "outDir": "./dist/academic-setup-bot",
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
     "resolveJsonModule": true,

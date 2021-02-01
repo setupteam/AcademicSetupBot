@@ -1,11 +1,11 @@
 import { Project } from "../entities/project";
-import { writeFile } from 'fs';
+import { writeFile, readFileSync } from 'fs';
 
 export class Database{
     private pathDatabase:string = "./database.json";
 
     saveProject(project:Project):Promise<string>{
-        const d = require(this.pathDatabase);
+        const d = JSON.parse(readFileSync(this.pathDatabase, 'utf-8'))
     
         if(d.projects.find(pp => pp.name == project.name))
             return new Promise((resolve, reject)=>{
@@ -21,7 +21,19 @@ export class Database{
     }
 
     getProject(name:string):Project{
-        return require(this.pathDatabase).projects.find(pp => pp.name == name);
+        return JSON.parse(readFileSync(this.pathDatabase, 'utf-8')).projects.find(pp => pp.name == name);
+    }
+
+    
+    updateProject(project: Project) {
+        const d:{ projects:Project[] } = JSON.parse(readFileSync(this.pathDatabase, 'utf-8'))
+    
+        d.projects[d.projects.indexOf(d.projects.find(pp => pp.name == project.name))]= project;
+
+        return this.saveDatabase(d, 
+            `Actualizado el proyecto: ${project.name}`,
+            `No se ha podido crear el proyecto : "${project.name}"`
+        )
     }
 
     private saveDatabase(d, res:string, rej:string):Promise<string>{

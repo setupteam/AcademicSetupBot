@@ -8,35 +8,35 @@ export abstract class EntityEmitter extends EventEmitter {
         this.names = names;
     }
 
-    protected onCreate(listener:(response:(text:string)=>void, ...args:string[])=>void){
+    protected onCreate(listener:(response:(res:any)=>void, ...args:string[])=>void){
         this.on("create", listener)
     }
 
-    protected onRead(listener:(response:(text:string)=>void, ...args:string[])=>void){
+    protected onRead(listener:(response:(res:any)=>void, ...args:string[])=>void){
         this.on("read", listener)
     }
 
-    protected onUpdate(listener:(response:(text:string)=>void, ...args:string[])=>void){
+    protected onUpdate(listener:(response:(res:any)=>void, ...args:string[])=>void){
         this.on("update", listener)
     }
 
-    protected onDelete(listener:(response:(text:string)=>void, ...args:string[])=>void){
+    protected onDelete(listener:(response:(res:any)=>void, ...args:string[])=>void){
         this.on("delete", listener)
     }
 
-    create(response:(text:string)=>void, ...args:string[]){
+    create(response:(res:any)=>void, ...args:string[]){
         this.emit("create", response, ...args);
     }
 
-    read(response:(text:string)=>void, name:string){
+    read(response:(res:any)=>void, name:string){
         this.emit("read", response, name);
     }
 
-    update(response:(text:string)=>void, ...args:string[]){
+    update(response:(res:any)=>void, ...args:string[]){
         this.emit("update", response, ...args);
     }
 
-    delete(response:(text:string)=>void, name:string){
-        this.emit("delete", response, name);
+    delete(response:(res:any)=>void,creator:string, name:string){
+        this.emit("delete", response,creator, name);
     }
 }

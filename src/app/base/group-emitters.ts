@@ -21,9 +21,10 @@ export class GroupEmitters{
     create(message:Message){
         let args =  Bot.getArguments(message.content);
         let emitter = this.findEmitter(args);
+        args.unshift(message.author.username)
 
         if(emitter)
-            emitter.create(text => message.channel.send(text), ...args)
+            emitter.create(res => message.reply(res), ...args)
         else
             console.log("No hay entidades emisoras")
     }
@@ -33,7 +34,7 @@ export class GroupEmitters{
         let emitter = this.findEmitter(args);
         
         if(emitter)
-            emitter.read(text => message.channel.send(text),args.shift())
+            emitter.read(res => message.reply(res),args.shift())
         else
             console.log("No hay entidades emisoras")
     }
@@ -43,7 +44,7 @@ export class GroupEmitters{
         let emitter = this.findEmitter(args);
 
         if(emitter)
-            emitter.update(text => message.channel.send(text), ...args)
+            emitter.update(res => message.reply(res), ...args)
         else
             console.log("No hay entidades emisoras")
     }
@@ -53,7 +54,7 @@ export class GroupEmitters{
         let emitter = this.findEmitter(args);
         
         if(emitter)
-            emitter.delete(text => message.channel.send(text),args.shift())
+            emitter.delete(res => message.reply(res),message.author.username, args.shift())
         else
             console.log("No hay entidades emisoras")
     }
