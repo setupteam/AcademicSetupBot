@@ -1,0 +1,40 @@
+{
+  "name": "academicsetupbot",
+  "version": "1.0.0",
+  "description": "El mejor bot academico",
+  "main": "index.js",
+  "scripts": {
+    "start": "node dist/academic-setup-bot/index.js",
+    "watch": "tsc -p tsconfig.json -w",
+    "test": "mocha -r ts-node/register \"tests/**/*.spec.ts\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/setupteam/AcademicSetupBot.git"
+  },
+  "keywords": [
+    "Bot",
+    "Discord",
+    "Academic"
+  ],
+  "author": "SetupTeam",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/setupteam/AcademicSetupBot/issues"
+  },
+  "homepage": "https://github.com/setupteam/AcademicSetupBot#readme",
+  "dependencies": {
+    "@types/node": "^11.9.4",
+    "discord.js": "^11.4.2",
+    "reflect-metadata": "^0.1.13",
+    "typescript": "^3.3.3"
+  },
+  "devDependencies": {
+    "@types/chai": "^4.1.7",
+    "@types/mocha": "^5.2.6",
+    "chai": "^4.2.0",
+    "mocha": "^8.2.1",
+    "ts-mockito": "^2.3.1",
+    "ts-node": "^8.0.3"
+  }
+}
