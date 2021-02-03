@@ -5,7 +5,6 @@
   "main": "index.js",
   "scripts": {
     "start": "node dist/academic-setup-bot/index.js",
-    "watch": "tsc -p tsconfig.json -w",
     "test": "tsc-watch --project tsconfig.json --onSuccess \"node dist/academic-setup-bot/index.js\""
   },
   "repository": {
@@ -24,8 +23,9 @@
   },
   "homepage": "https://github.com/setupteam/AcademicSetupBot#readme",
   "dependencies": {
+    "@felipespirit/simple-bot-discord": "^1.0.4",
     "@types/node": "^11.9.4",
-    "discord.js": "^11.4.2",
+    "discord.js": "^12.5.1",
     "reflect-metadata": "^0.1.13",
     "typescript": "^3.3.3"
   },

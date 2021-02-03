@@ -1,4 +1,4 @@
-import { RichEmbed } from "discord.js";
+import { MessageEmbed } from "discord.js";
 import { EntityEmitter } from "../../base/entity.emitter";
 import { database } from '../../constants';
 import { Task } from "../entities/task";
@@ -23,7 +23,7 @@ export class ProjectEmitter extends EntityEmitter{
                     for(let i =0;i < mm.length;i++)
                         mm[i] = `<@${mm[i]}>`;
     
-                    let embed = new RichEmbed()
+                    let embed = new MessageEmbed()
                     .setTitle(p.name)
                     .setColor(0x00AE86)
                     .addField("Miembros", mm.join(", "))
@@ -52,7 +52,7 @@ export class ProjectEmitter extends EntityEmitter{
                             tks+= '\n';
                         });
     
-                        embed.fields.push({name:"Tareas", value:tks});
+                        embed.fields.push({name:"Tareas", value:tks, inline:false});
                     }
     
                     response({embed});

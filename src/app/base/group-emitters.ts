@@ -1,12 +1,17 @@
 import { Message } from "discord.js";
-import { Bot } from "./bot";
 import { EntityEmitter } from "./entity.emitter";
 
 export class GroupEmitters{
+    prefix:string;
     emitters:EntityEmitter[];
 
-    constructor(){
+    constructor(prefix:string){
+        this.prefix = prefix;
         this.emitters = [];
+    }
+
+    getArguments(message) {
+        return message.slice(this.prefix.length).trim().split(/ +/g);
     }
 
     add(emitter:EntityEmitter){
@@ -19,7 +24,7 @@ export class GroupEmitters{
     }
 
     create(message:Message){
-        let args =  Bot.getArguments(message.content);
+        let args =  this.getArguments(message.content);
         let emitter = this.findEmitter(args);
         args.unshift(message.author.id)
 
@@ -30,7 +35,7 @@ export class GroupEmitters{
     }
 
     read(message:Message){
-        let args =  Bot.getArguments(message.content);
+        let args =  this.getArguments(message.content);
         let emitter = this.findEmitter(args);
         
         if(emitter)
@@ -40,7 +45,7 @@ export class GroupEmitters{
     }
 
     update(message:Message){
-        let args =  Bot.getArguments(message.content);
+        let args =  this.getArguments(message.content);
         let emitter = this.findEmitter(args);
 
         if(emitter)
@@ -50,7 +55,7 @@ export class GroupEmitters{
     }
 
     delete(message:Message){
-        let args =  Bot.getArguments(message.content);
+        let args =  this.getArguments(message.content);
         let emitter = this.findEmitter(args);
         
         if(emitter)
