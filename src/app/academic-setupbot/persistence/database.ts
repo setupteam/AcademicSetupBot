@@ -1,47 +1,87 @@
 import { Project } from "../entities/project";
 import { writeFile, readFileSync } from 'fs';
+const sqlite3 = require('sqlite3').verbose();
+const Database = sqlite3.Database;
 
-export class Database{
-    private pathDatabase:string = "./database.json";
-
-    saveProject(project:Project):Promise<string>{
-        const d = JSON.parse(readFileSync(this.pathDatabase, 'utf-8'))
-    
-        if(d.projects.find(pp => pp.name == project.name))
-            return new Promise((resolve, reject)=>{
-			    resolve(`El proyecto ${project.name} ya existe.`)
-		    })
-
-	    d.projects.push(project);
-
-        return this.saveDatabase(d, 
-            `Creado el proyecto: ${project.name} por ${project.creator}`,
-            `No se ha podido crear el proyecto : "${project.name}"`
-        )
-    }
-
-    getProject(name:string):Project{
-        return JSON.parse(readFileSync(this.pathDatabase, 'utf-8')).projects.find(pp => pp.name == name);
-    }
-
-    
-    updateProject(project: Project) {
-        const d:{ projects:Project[] } = JSON.parse(readFileSync(this.pathDatabase, 'utf-8'))
-    
-        d.projects[d.projects.indexOf(d.projects.find(pp => pp.name == project.name))]= project;
-
-        return this.saveDatabase(d, 
-            `Actualizado el proyecto: ${project.name}`,
-            `No se ha podido crear el proyecto : "${project.name}"`
-        )
-    }
-
-    private saveDatabase(d, res:string, rej:string):Promise<string>{
-        return new Promise<string>((resolve, reject)=>{
-            writeFile(this.pathDatabase, JSON.stringify(d), err => {
-                if (err) console.log(err.message);
-                else resolve(res)
-            });
+export class BotDatabase extends Database{
+    constructor(){
+        super('./db/academic.db', err=>{
+            if(err)
+                console.log(err.message);
+            else
+                console.log("Connected DB")
         })
+
+        let drop = false;
+
+        if(drop){
+            this.run("DROP TABLE IF EXISTS projects")
+            this.run("DROP TABLE IF EXISTS members")
+        }else{
+            this.run(`CREATE TABLE IF NOT EXISTS projects(
+                name text not null unique, 
+                creator text not null, 
+                createdAt text not null, 
+                description text, 
+                category text, 
+                repository text)`)
+    
+            this.run(`CREATE TABLE IF NOT EXISTS members(
+                project_id integer not null, 
+                member_id text not null)`)
+        }
+    }
+
+    saveProject(p:Project){
+        new Promise((resolve, reject)=>{
+            let id = this.run(
+            `INSERT INTO projects (name, creator, createdAt) VALUES 
+                ('${p.name}', '${p.creator}', datetime('now'))`, 
+            function (err){
+                    if(err)
+                     reject(err.message)
+
+                    resolve(this.lastID)
+            });
+        }).then(id=>{
+            this.run(`INSERT INTO members (project_id, member_id) VALUES 
+            ('${id}', '${p.creator}')`)
+        }).catch(err=>{
+            console.error(err)
+        })
+
+        
+
+    }
+
+    getProject(name:string):Promise<Project>{
+        return new Promise((resolve, reject)=>{
+            this.get(`SELECT rowid, name, creator, createdAt, description, category, repository FROM projects WHERE name = ?`, [name], (err, project)=>{
+                if (err) 
+                    reject("Hubo un error en la lectura, intenta de nuevo");
+                else if(!project)
+                    reject(`No existe el proyecto ${name}`);
+                else{
+                    new Promise((resolve, reject)=>{
+                        this.all(`SELECT member_id FROM members WHERE project_id = ?`,[project.rowid], (err, rows)=>{
+                            if(err)
+                                reject("Hubo un error en la lectura, intenta de nuevo");
+                            else{
+                                resolve(rows)
+                            }
+                        })
+                    }).then((membersO:{member_id}[])=>{
+                        project.members =[];
+                        membersO.forEach(mo=>{
+                            project.members.push(mo.member_id)
+                        })
+
+                        resolve(project)
+                    }).catch(err=>{
+                        reject(err);
+                    })
+                }
+            })
+        });
     }
 }

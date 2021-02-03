@@ -5,7 +5,7 @@ export class Project{
     name:string;
     description?:string;
     creator:string;
-    createdAt:Date;
+    createdAt?:Date;
     category?:string;
     repository?:string;
     members?:string[]=[];

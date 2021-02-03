@@ -1,3 +1,3 @@
-import { Database } from "./academic-setupbot/persistence/database";
+import { BotDatabase } from "./academic-setupbot/persistence/database";
 
-export const database = new Database();
+export const database = new BotDatabase();

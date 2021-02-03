@@ -27,6 +27,7 @@
     "@types/node": "^11.9.4",
     "discord.js": "^12.5.1",
     "reflect-metadata": "^0.1.13",
+    "sqlite3": "^5.0.1",
     "typescript": "^3.3.3"
   },
   "devDependencies": {

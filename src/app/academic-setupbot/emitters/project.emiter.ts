@@ -9,14 +9,12 @@ export class ProjectEmitter extends EntityEmitter{
         super("proyecto", "pj");
 
         this.onCreate((response, creator, name, category)=>{
-            database.saveProject({creator,name, createdAt:new Date(), category, members:[creator]}).then(res=>{
-                response(res);
-            })
+            database.saveProject({creator,name, category, members:[creator]})
         })
 
         this.onRead((response, name, user)=>{
             let p = database.getProject(name);
-            if(p){
+            p.then(p=>{
                 let mm = p.members;
                 
                 if(mm.includes(user)){
@@ -59,13 +57,13 @@ export class ProjectEmitter extends EntityEmitter{
                 }else{
                     response({embed:{description:`Lo siento <@${user}>, no perteneces a este proyecto`}});
                 }
-                
-            } else
-                response(`No existe el proyecto "${name}"`);
+            }).catch(err=>{
+                response(err);
+            })
         })
 
         this.onUpdate((response, name, context, entity, eName, date, description)=>{
-            let p = database.getProject(name);
+            /*let p = dbc.getProject(name);
             let ok:boolean = true;
             
             switch(context){
@@ -101,9 +99,9 @@ export class ProjectEmitter extends EntityEmitter{
             }
 
             if(ok)
-                database.updateProject(p).then(res=>{
+                dbc.updateProject(p).then(res=>{
                     response(res);
-                })
+                })*/
         })
 
         this.onDelete((response, creator, name)=>{
