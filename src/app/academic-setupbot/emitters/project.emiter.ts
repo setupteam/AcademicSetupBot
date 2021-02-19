@@ -9,12 +9,11 @@ export class ProjectEmitter extends EntityEmitter{
         super("proyecto", "pj");
 
         this.onCreate((response, creator, name, category)=>{
-            database.saveProject({creator,name, category, members:[creator]})
+            database.saveProject({creator,name, category, members:[creator]}).then(res=> response(res))
         })
 
         this.onRead((response, name, user)=>{
-            let p = database.getProject(name);
-            p.then(p=>{
+            database.getProject(name).then(p=>{
                 let mm = p.members;
                 
                 if(mm.includes(user)){
@@ -104,9 +103,7 @@ export class ProjectEmitter extends EntityEmitter{
                 })*/
         })
 
-        this.onDelete((response, creator, name)=>{
-            database.deleteProject(name);
-        })
+        this.onDelete((response, creator, name) => database.deleteProject(name, creator).then(res => response(res)))
     }
 
     create(response:(text:string)=>void,creator:string,  name:string, description, category){
