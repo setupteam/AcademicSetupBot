@@ -33,25 +33,28 @@ export class BotDatabase extends Database{
     }
 
     saveProject(p:Project){
-        new Promise((resolve, reject)=>{
-            let id = this.run(
+        return new Promise((resolve, reject)=>{
+            this.run(
             `INSERT INTO projects (name, creator, createdAt) VALUES 
-                ('${p.name}', '${p.creator}', datetime('now'))`, 
+            ('${p.name}', '${p.creator}', datetime('now'))`, 
             function (err){
-                    if(err)
-                     reject(err.message)
+                if(err){
+                    if(err.message.includes("UNIQUE constraint failed: projects.name"))
+                        reject("Ese nombre de proyecto ya existe")
+                    else
+                        console.error(err);
+                }
 
-                    resolve(this.lastID)
+                resolve(this.lastID)
             });
         }).then(id=>{
             this.run(`INSERT INTO members (project_id, member_id) VALUES 
             ('${id}', '${p.creator}')`)
+            return "Guardado correcto"
         }).catch(err=>{
-            console.error(err)
+            if(err)
+                return err;
         })
-
-        
-
     }
 
     getProject(name:string):Promise<Project>{
@@ -63,6 +66,7 @@ export class BotDatabase extends Database{
                     reject(`No existe el proyecto ${name}`);
                 else{
                     new Promise((resolve, reject)=>{
+                        console.log(project);
                         this.all(`SELECT member_id FROM members WHERE project_id = ?`,[project.rowid], (err, rows)=>{
                             if(err)
                                 reject("Hubo un error en la lectura, intenta de nuevo");
@@ -83,5 +87,35 @@ export class BotDatabase extends Database{
                 }
             })
         });
+    }
+
+    deleteProject(name:string, creator:string){
+        return new Promise((resolve, reject)=>{
+            this.get("SELECT rowid FROM projects WHERE name = ? AND creator = ?",[name, creator], (err, project)=>{
+
+                if(err){
+                    console.log("A", err)
+                    if(err.message.includes("no such column"))
+                        reject("No existe ese proyecto");
+                }
+
+                if(project)
+                    resolve(project.rowid);
+                else
+                    reject("No existe ese proyecto o no te pertenece.")
+            });
+        }).then(id =>{
+            this.run(`DELETE FROM members WHERE project_id = ?`, [id],(err)=>{
+                if(err) return "No se pudo eliminar el proyecto";
+            })
+
+            this.run(`DELETE FROM projects WHERE rowid = ?`, [id], (err)=>{
+                if(err) return "No se pudieron eliminar los miembros del proyecto";
+            })
+
+            return `Eliminado exitosamente ${name}`;
+        }).catch((err:string)=>{
+            return err;
+        })
     }
 }
