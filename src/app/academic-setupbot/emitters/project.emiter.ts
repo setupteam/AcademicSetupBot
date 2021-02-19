@@ -104,6 +104,8 @@ export class ProjectEmitter extends EntityEmitter{
         })
 
         this.onDelete((response, creator, name) => database.deleteProject(name, creator).then(res => response(res)))
+        
+        this.onAll((response, creator) => database.allProjects(creator).then(res => response(JSON.stringify(res))))
     }
 
     create(response:(text:string)=>void,creator:string,  name:string, description, category){

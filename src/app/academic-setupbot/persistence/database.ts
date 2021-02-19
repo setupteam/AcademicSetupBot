@@ -90,6 +90,7 @@ export class BotDatabase extends Database{
     }
 
     deleteProject(name:string, creator:string){
+        console.log(name, creator);
         return new Promise((resolve, reject)=>{
             this.get("SELECT rowid FROM projects WHERE name = ? AND creator = ?",[name, creator], (err, project)=>{
 
@@ -117,5 +118,19 @@ export class BotDatabase extends Database{
         }).catch((err:string)=>{
             return err;
         })
+    }
+
+    allProjects(name:string):Promise<Project[]>{
+        return new Promise((resolve, reject)=>{
+            this.all(`SELECT rowid, name, creator, createdAt, description, category, repository FROM projects WHERE creator = ?`, [name], (err, projects)=>{
+                if (err) 
+                    reject("Hubo un error en la lectura, intenta de nuevo");
+                else if(!projects)
+                    reject(`No existe el proyecto ${name}`);
+                else{
+                    resolve(projects)
+                }
+            })
+        });
     }
 }

@@ -17,7 +17,8 @@ export class AcademicSetupBot extends Bot{
             { names: ["crear", "c"], listener: message => this.emitters.create(message)},
             { names: ["ver", "v"], listener: message => this.emitters.read(message)},
             { names: ["modificar", "m"], listener: message => this.emitters.update(message)},
-            { names: ["eliminar", "e"], listener: message => this.emitters.delete(message)}
+            { names: ["eliminar", "e"], listener: message => this.emitters.delete(message)},
+            { names: ['ver-todos', "vt"], listener: message => this.emitters.all(message)}
         )
     }
 }

@@ -59,7 +59,17 @@ export class GroupEmitters{
         let emitter = this.findEmitter(args);
         
         if(emitter)
-            emitter.delete(res => message.reply(res),message.author.username, args.shift())
+            emitter.delete(res => message.reply(res),message.author.id, args.shift())
+        else
+            console.log("No hay entidades emisoras")
+    }
+
+    all(message:Message){
+        let args =  this.getArguments(message.content);
+        let emitter = this.findEmitter(args);
+        
+        if(emitter)
+            emitter.all(res => message.reply(res), message.author.id)
         else
             console.log("No hay entidades emisoras")
     }

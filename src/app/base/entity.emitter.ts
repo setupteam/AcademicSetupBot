@@ -24,6 +24,10 @@ export abstract class EntityEmitter extends EventEmitter {
         this.on("delete", listener)
     }
 
+    protected onAll(listener:(response:(res:any)=>void, ...args:string[])=>void){
+        this.on("all", listener)
+    }
+
     create(response:(res:any)=>void, ...args:string[]){
         this.emit("create", response, ...args);
     }
@@ -38,5 +42,9 @@ export abstract class EntityEmitter extends EventEmitter {
 
     delete(response:(res:any)=>void,creator:string, name:string){
         this.emit("delete", response,creator, name);
+    }
+
+    all(response:(res:any)=>void, user:string){
+        this.emit("all", response, user);
     }
 }

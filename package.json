@@ -24,15 +24,15 @@
   "homepage": "https://github.com/setupteam/AcademicSetupBot#readme",
   "dependencies": {
     "@felipespirit/simple-bot-discord": "^1.0.4",
-    "@types/node": "^11.9.4",
     "discord.js": "^12.5.1",
-    "reflect-metadata": "^0.1.13",
-    "sqlite3": "^5.0.0",
-    "typescript": "^3.3.3"
+    "sqlite3": "^5.0.0"
   },
   "devDependencies": {
     "@types/chai": "^4.1.7",
     "@types/mocha": "^5.2.6",
+    "@types/node": "^11.9.4",
+    "reflect-metadata": "^0.1.13",
+    "typescript": "^3.3.3",
     "chai": "^4.2.0",
     "mocha": "^8.2.1",
     "nodemon": "^2.0.7",
