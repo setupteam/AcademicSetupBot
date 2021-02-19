@@ -105,7 +105,7 @@ export class ProjectEmitter extends EntityEmitter{
         })
 
         this.onDelete((response, creator, name)=>{
-            response(`Eliminar proyecto "${name}"`);
+            database.deleteProject(name);
         })
     }
 

@@ -84,4 +84,20 @@ export class BotDatabase extends Database{
             })
         });
     }
+
+    deleteProject(name:String){
+        new Promise((resolve, reject)=>{
+            let id = this.run(
+            `SELECT project_id FROM projects WHERE name = ${name}`, 
+            function (err){
+                    if(err)
+                     reject(err.message)
+            });
+        }).then(id=>{
+            this.run(`DELETE FROM members WHERE project_id = ${id}`)
+            this.run(`DELETE FROM projects WHERE project_id = ${id}`)
+        }).catch(err=>{
+            console.error(err)
+        })
+    }
 }
