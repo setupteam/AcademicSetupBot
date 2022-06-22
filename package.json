@@ -25,7 +25,7 @@
   "dependencies": {
     "@felipespirit/simple-bot-discord": "^1.0.4",
     "discord.js": "^12.5.1",
-    "sqlite3": "^5.0.0"
+    "sqlite3": "^5.0.3"
   },
   "devDependencies": {
     "@types/chai": "^4.1.7",
